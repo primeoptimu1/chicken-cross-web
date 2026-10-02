@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chicken Cross</title>
+<style>
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #101418; color: #f2f2f2; font: 16px system-ui, sans-serif; text-align: center; }
+  h1 { margin: 0 0 4px; }
+  #road { font-size: 34px; letter-spacing: 6px; margin: 24px 0; }
+  button { font: inherit; padding: 12px 28px; border: 0; border-radius: 8px; background: #ffd23f; color: #101418; font-weight: 600; cursor: pointer; }
+  p { color: #aab; }
+  a { color: #8fb3ff; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Chicken Cross</h1>
+  <p>Get the chicken across five lanes of traffic.</p>
+  <div id="road"></div>
+  <p id="msg">Each step has a 1 in 4 chance of a car.</p>
+  <button id="go">Step</button>
+  <p><small>Source: <a href="https://github.com/primeoptimu1">github.com/primeoptimu1</a></small></p>
+</main>
+<script>
+  let lane = 0, over = false;
+  const road = document.getElementById("road"), msg = document.getElementById("msg"), go = document.getElementById("go");
+  const draw = (dead) => { road.textContent = Array.from({ length: 6 }, (_, i) => i === lane ? (dead ? "💥" : "🐔") : i === 5 ? "🏁" : "▫️").join(""); };
+  go.onclick = () => {
+    if (over) { lane = 0; over = false; go.textContent = "Step"; msg.textContent = "Each step has a 1 in 4 chance of a car."; return draw(); }
+    if (Math.random() < 0.25) { over = true; msg.textContent = "Splat. The chicken did not make it."; go.textContent = "Play again"; return draw(true); }
+    lane++;
+    if (lane === 5) { over = true; msg.textContent = "The chicken crossed the road!"; go.textContent = "Play again"; }
+    draw();
+  };
+  draw();
+</script>
+</body>
+</html>
